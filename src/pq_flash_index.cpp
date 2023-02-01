@@ -635,10 +635,6 @@ namespace diskann {
       }
     }
 
-    std::string pq_table_bin = std::string(index_prefix) + "_pq_pivots.bin";
-    std::string pq_compressed_vectors =
-        std::string(index_prefix) + "_pq_compressed.bin";
-    std::string disk_index_file = std::string(index_prefix) + "_disk.index";
 #ifdef EXEC_ENV_OLS
     return load_from_separate_paths(files, num_threads, disk_index_file.c_str(),
                                     pq_table_bin.c_str(),
@@ -1260,16 +1256,6 @@ namespace diskann {
           else
             cur_expanded_dist = disk_pq_table.l2_distance(
                 query_float, (_u8 *) node_fp_coords_copy);
-        }
-
-        _u32 real_id = frontier_nhood.first;
-        if (_dummy_pts.find(real_id) != _dummy_pts.end()) {
-          real_id = _dummy_to_real_map[real_id];
-        }
-        Neighbor real_nbr(real_id, cur_expanded_dist, true);
-        if (std::find(full_retset.begin(), full_retset.end(), real_nbr) ==
-            full_retset.end()) {
-          full_retset.emplace_back(real_nbr);
         }
 
         full_retset.push_back(
