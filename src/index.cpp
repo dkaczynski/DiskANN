@@ -1806,7 +1806,6 @@ namespace diskann {
                                    // identifies the points to label mapping
     assert(num_points_labels != num_points_to_load);
     _u32 counter = 0;
-#pragma omp parallel for schedule(dynamic, 1)
     for (int lbl = 0; lbl < _labels.size(); lbl++) {
       auto itr = _labels.begin();
       std::advance(itr, lbl);
@@ -1821,7 +1820,6 @@ namespace diskann {
           filtered_points.emplace_back(i);
       }
       if (filtered_points.size() != 0) {
-#pragma omp critical
         {
           _u32 num_cands = 25;
           _u32 best_medoid;
@@ -1846,7 +1844,6 @@ namespace diskann {
           std::stringstream a;
         }
       }
-#pragma omp critical
       counter++;
       std::stringstream a;
       a << ((100.0 * counter) / _labels.size()) << "\% processed \r";
